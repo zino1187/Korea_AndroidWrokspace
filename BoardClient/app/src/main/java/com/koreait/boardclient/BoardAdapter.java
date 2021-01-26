@@ -23,7 +23,7 @@ public class BoardAdapter extends BaseAdapter {
 
     @Override
     public int getCount() { //레코드 갯수가 몇개인지 반환..
-        return 3;
+        return list.size();
     }
 
     //ListView의 각 칸 아이템이 아닌, 배열 및 리스트의 각 요소값(디자인 X)

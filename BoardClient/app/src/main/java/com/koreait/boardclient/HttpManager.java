@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HttpManager {
@@ -20,9 +21,10 @@ public class HttpManager {
         converter = new BoardConverter<Board>();
     }
 
-    public void requestByGet(String requestUrl){
+    public ArrayList<Board> requestByGet(String requestUrl){
         BufferedReader buffr=null;
         StringBuilder sb = new StringBuilder();
+        ArrayList<Board> boardList=null;
 
         try {
             url = new URL(requestUrl);
@@ -41,7 +43,7 @@ public class HttpManager {
             con.getResponseCode(); //요청 및 응답이 발생하는 시점!!!
             Log.d(TAG, sb.toString());
 
-            List<Board> boardList=converter.getConvertedData(sb.toString());
+            boardList=converter.getConvertedData(sb.toString());
             Log.d(TAG, "컨버트된 리스트의 수 "+boardList.size());
 
         } catch (MalformedURLException e) {
@@ -57,7 +59,9 @@ public class HttpManager {
                 }
             }
         }
+        return boardList;
     }
+
     public void requestByPost(){
 
     }
