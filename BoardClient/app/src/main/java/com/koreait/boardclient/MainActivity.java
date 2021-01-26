@@ -7,14 +7,24 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    String TAG=this.getClass().getName();
+    EditText t_title;
+    EditText t_writer;
+    EditText t_content;
     ListView listView;
+
     BoardAdapter boardAdapter;
     HttpManager httpManager;
     Handler handler;
@@ -26,7 +36,11 @@ public class MainActivity extends AppCompatActivity {
 
         //리스트와 어댑터 연결!!
         //디자인이 복잡한(복합뷰) ListView는 BaseAdapter 를 재정의해야 한다..
-        listView = this.findViewById(R.id.listView); //JTable
+        listView = this.findViewById(R.id.listView);
+        t_title=this.findViewById(R.id.t_title);
+        t_writer=this.findViewById(R.id.t_writer);
+        t_content=this.findViewById(R.id.t_content);
+
         boardAdapter = new BoardAdapter(this);
         listView.setAdapter(boardAdapter);//리스트뷰와 어댑터와의 연결!!!
         httpManager = new HttpManager();
@@ -43,7 +57,28 @@ public class MainActivity extends AppCompatActivity {
         };
     }
     public void regist(View view){
+        Thread thread = new Thread(){
+            public void run() {
 
+                try {
+                    //json 생성하기
+                    Log.d(TAG, "제목은 "+t_title.getText().toString());
+
+                    JSONObject json = new JSONObject();
+                    json.put("title", t_title.getText().toString());
+                    json.put("writer", t_writer.getText().toString());
+                    json.put("content",t_content.getText().toString());
+
+                    Log.d(TAG, "json 스트링은 "+json.toString());
+
+                    httpManager.requestByPost("http://172.30.1.28:8888/rest/board", json.toString());
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        thread.start();
     }
 
     public void getList(View view){

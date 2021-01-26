@@ -9,16 +9,19 @@
 
     <!--등록관련 -->
     <EditText
+        android:id="@+id/t_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="제목입력..." />
 
     <EditText
+        android:id="@+id/t_writer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="작성자입력..." />
 
     <EditText
+        android:id="@+id/t_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="내용입력..." />

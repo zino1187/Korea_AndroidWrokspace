@@ -3,8 +3,10 @@ package com.koreait.boardclient;
 import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -62,7 +64,38 @@ public class HttpManager {
         return boardList;
     }
 
-    public void requestByPost(){
+    public void requestByPost(String requestUrl, String param){
+        URL url=null;
+        HttpURLConnection con=null;
+        BufferedWriter buffw=null;
+
+        try {
+            url = new URL(requestUrl);
+            con=(HttpURLConnection) url.openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type","application/json;charset=utf-8");//헤더값 구성
+            con.setDoOutput(true);//서버로 데이터를 출력하려면 true 로 처리해야 함
+
+            buffw = new BufferedWriter(new OutputStreamWriter( con.getOutputStream(),"UTF-8"));
+            buffw.write(param);//json 문자열 전송!!
+            buffw.flush();
+
+            int code = con.getResponseCode(); //여기서 요청 및 응답처리됨..
+            Log.d(TAG, "'등록 후 서버로부터 받은 응답코드 "+code);
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally{
+            if(buffw!=null){
+                try {
+                    buffw.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
     }
 }

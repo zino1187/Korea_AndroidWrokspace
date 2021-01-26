@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -52,6 +53,14 @@ public class BoardAdapter extends BaseAdapter {
         }else{//발급받은 적이 있다면, 그대로 쓰자!!
             view = convertView;
         }
+
+        //인플레이션에 의해 반환된 최상위 컨테이너인 view는 자신이 보유한 자식 요소에 접근할 수 있다.
+        TextView tv_title = view.findViewById(R.id.item_title);
+        TextView tv_writer = view.findViewById(R.id.item_writer);
+        Board board = list.get(position);
+        tv_title.setText(board.getTitle()+"(조회: "+board.getHit()+")");
+        tv_writer.setText(board.getWriter()+"( "+board.getRegdate()+" )");
+
         return view;
     }
 }
