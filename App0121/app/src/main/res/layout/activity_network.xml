@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NetworkActivity">
+
+    <EditText
+        android:id="@+id/t_id"
+        style="@style/formStyle"
+        android:inputType="text"
+        android:hint="아이디입력"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/t_pass"
+        style="@style/formStyle"
+        android:inputType="textPassword"
+        android:hint="비밀번호 입력"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/t_name"
+        style="@style/formStyle"
+        android:inputType="text"
+        android:hint="이름 입력"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:layout_gravity="center_horizontal"
+        android:text="회원등록"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="regist"/>
+
+</LinearLayout>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="50dp"
+
+            android:orientation="vertical">
+
+            <EditText
+                style="@style/editStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="아이디입력" />
+
+            <EditText
+                style="@style/editStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="이름 입력" />
+
+            <EditText
+                style="@style/editStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="비밀번호 입력"
+                android:inputType="textPassword" />
+
+            <RadioGroup
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:text="man"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <RadioButton
+                    android:text="woman"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </RadioGroup>
+        </LinearLayout>
+
+        <Button
+            style="@style/btStyle"
+            android:layout_alignLeft="@id/content"
+            android:layout_below="@id/content"
+            android:id="@+id/bt_regist"
+            android:text="회원가입"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            style="@style/btStyle"
+            android:layout_alignRight="@id/content"
+            android:layout_below="@id/content"
+            android:id="@+id/bt_login"
+            android:text="Login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+    </RelativeLayout>
+
+</LinearLayout>
+

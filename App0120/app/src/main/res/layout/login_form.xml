@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFDD00"
+    android:orientation="vertical">
+    <!--
+    선형레이아웃, 방향성을 가지는 레이아웃
+    수평방향  :horizontal
+    수직방향 :vertical
+    -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:orientation="vertical">
+
+            <EditText
+                style="@style/login_form"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="아이디 입력  " />
+
+            <EditText
+                style="@style/login_form"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="비밀번호 입력" />
+
+            <EditText
+                style="@style/login_form"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="이름 입력 " />
+        </LinearLayout>
+
+        <Button
+            android:layout_alignLeft="@id/form"
+            android:layout_below="@id/form"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="가입하기"
+            android:onClick="regist"/>
+
+        <Button
+            android:layout_alignRight="@id/form"
+            android:layout_below="@id/form"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="로그인" />
+    </RelativeLayout>
+</LinearLayout>
+
+
+
+
+
+
+
+

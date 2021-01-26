@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
+    <!-- 자신이 보유한 자식을 대상으로 한 정렬 -->
+
+    <Button
+        android:text="버튼1"
+        android:layout_width="100dp"
+        android:layout_height="100dp"/>
+
+    <!-- 자신을 배치하고 있는 부모 컨테이너를 기준으로 한 정렬 -->
+    <Button
+        android:layout_gravity="left"
+        android:text="버튼2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"/>
+
+    <Button
+        android:layout_gravity="right"
+        android:text="버튼3"
+        android:layout_width="100dp"
+        android:layout_height="100dp"/>
+
+</LinearLayout>
