@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
                     Log.d(TAG, "json 스트링은 "+json.toString());
 
-                    httpManager.requestByPost("http://172.30.1.28:8888/rest/board", json.toString());
+                    httpManager.requestByPost("http://172.30.1.28:7777/rest/board", json.toString());
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         //네트워크 통신을 위한 쓰레드 생성 및 실행
         Thread thread = new Thread(){
             public void run() {
-                ArrayList<Board> boardList = httpManager.requestByGet("http://172.30.1.28:8888/rest/board");
+                ArrayList<Board> boardList = httpManager.requestByGet("http://172.30.1.28:7777/rest/board");
 
                 //핸들러에 요청 시점
                 Message message = new Message();
