@@ -6,6 +6,4 @@
     android:layout_height="match_parent"
     android:background="#FFFF0000">
 
-    <include layout="@layout/navi"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

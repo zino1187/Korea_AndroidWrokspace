@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    app:layout_constraintBottom_toBottomOf="parent">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:background="#FFFF0000"
+        android:id="@+id/bt_red"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:onClick="showPage"
+        android:text="Red" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:background="#FF0000FF"
+        android:id="@+id/bt_blue"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:onClick="showPage"
+        android:text="Blue" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:background="#FFFFDD00"
+        android:id="@+id/bt_yellow"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:onClick="showPage"
+        android:text="Yellow" />
+
+</LinearLayout>
