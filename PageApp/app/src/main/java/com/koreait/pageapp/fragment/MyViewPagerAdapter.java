@@ -1,13 +1,10 @@
-package com.koreait.pageapp.activity;
+package com.koreait.pageapp.fragment;
 
-
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.PagerAdapter;
 
 //ListView가 BaseAdapter에 의존하듯, ViewPager또한 PagerAdapter를 통해
 //어떤 페이지가 보여질지를 구성한다!!

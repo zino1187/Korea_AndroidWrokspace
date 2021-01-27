@@ -1,4 +1,4 @@
-package com.koreait.pageapp.activity;
+package com.koreait.pageapp.fragment;
 
 
 import android.os.Bundle;

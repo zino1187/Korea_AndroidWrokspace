@@ -4,12 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
 import com.koreait.pageapp.R;
+import com.koreait.pageapp.fragment.BlueFragment;
+import com.koreait.pageapp.fragment.RedFragment;
+import com.koreait.pageapp.fragment.YellowFragment;
 
 //서블릿 : 우리가 new? --> 시스템에 관리를 맡긴다.. --> 생명주기
 //생명주기를 메서드를 제공하여, 개발자로 하여금 제어가 가능하도록...
