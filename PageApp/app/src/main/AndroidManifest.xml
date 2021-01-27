@@ -9,16 +9,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PageApp">
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.PagerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".activity.RedActivity"></activity>
-        <activity android:name=".activity.BlueActivity"></activity>
-        <activity android:name=".activity.YellowActivity"></activity>
+        <activity android:name=".activity.MainActivity">
+        </activity>
+        <activity android:name=".activity.RedActivity" />
+        <activity android:name=".activity.BlueActivity" />
+        <activity android:name=".activity.YellowActivity" />
     </application>
 
 </manifest>
