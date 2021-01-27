@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.koreait.pageapp.R;
 
@@ -21,4 +22,21 @@ public class PagerActivity extends AppCompatActivity {
         adapter = new MyViewPagerAdapter(this.getSupportFragmentManager(), 0);
         viewPager.setAdapter(adapter);
     }
+
+    public void showPage(View view){
+        switch (view.getId()){
+            case R.id.bt_red :flowPage(0);break;
+            case R.id.bt_blue :flowPage(1);break;
+            case R.id.bt_yellow :flowPage(2);break;
+        }
+    }
+
+    //페이지 자동 스크롤
+    public void flowPage(int position){
+        viewPager.setCurrentItem(position, true);
+    }
 }
+
+
+
+
