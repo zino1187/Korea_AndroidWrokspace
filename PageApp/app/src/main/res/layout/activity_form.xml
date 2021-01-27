@@ -33,4 +33,19 @@
         android:layout_height="wrap_content"
         android:text="데이터 전달"/>
 
+    <Button
+        android:id="@+id/bt_receive"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="데이터 전달 후 결과 받기"/>
+
+    <Button
+        android:id="@+id/bt_dial"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="전화 다이얼 호출"/>
+
+
 </LinearLayout>
