@@ -24,12 +24,15 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_form);
 
         Button bt_send = (Button)findViewById(R.id.bt_send);
+        Button bt_receive = (Button)findViewById(R.id.bt_receive);
         Button bt_dial = (Button)findViewById(R.id.bt_dial);
+
         t_id = (EditText)findViewById(R.id.t_id);
         t_pass = (EditText)findViewById(R.id.t_pass);
         t_name = (EditText)findViewById(R.id.t_name);
 
         bt_send.setOnClickListener(this);//위젯 버튼과 리스너와의 연결
+        bt_receive.setOnClickListener(this);//위젯 버튼과 리스너와의 연결
         bt_dial.setOnClickListener(this);//위젯 버튼과 리스너와의 연결
     }
 
@@ -80,6 +83,7 @@ public class FormActivity extends AppCompatActivity implements View.OnClickListe
         //매개변수: 전달할 데이터, 요청 구분코드
         startActivityForResult(intent, REQUEST_CODE);
     }
+
     //requestCode 매개변수 : 내가 보냈던 통신 요청 코드(독수리, 1)
     //아래의 메서드에서 전달된 코드와 내가 보낸 코드가 일치한 경우만, 통신에 방해요소가 없는 무결성응답임
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

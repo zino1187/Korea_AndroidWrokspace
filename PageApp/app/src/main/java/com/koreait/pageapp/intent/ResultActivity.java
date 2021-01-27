@@ -33,6 +33,7 @@ public class ResultActivity extends AppCompatActivity {
     public void close(View view){
         send();
     }
+
     public void send(){
        //보낼 데이터 구성하기
        Intent intent = new Intent(); //명시하지 않은 이유?? 우리가 원하는건 새롭게 생성된
