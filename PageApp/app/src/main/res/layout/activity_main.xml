@@ -8,6 +8,7 @@
 
     <!--  화면의 일부를 담당하는 프레그먼트 넣기  -->
     <FrameLayout
+        android:id="@+id/frame"
         android:background="#FFCCEE33"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
