@@ -39,6 +39,6 @@ public class MusicFragment extends Fragment {
         mediaPlayer.start();
     }
     public void stopMusic(int resId){
-
+        mediaPlayer.stop();
     }
 }

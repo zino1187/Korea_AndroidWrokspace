@@ -76,6 +76,10 @@ public class MusicAdapter extends BaseAdapter {
             Log.d(TAG, "파일명은 "+music.getTitle());
             musicFragment.playMusic(music.getFile());
         });
+
+        bt_stop.setOnClickListener(e->{
+            musicFragment.stopMusic(music.getFile());
+        });
         return view;
     }
 }
