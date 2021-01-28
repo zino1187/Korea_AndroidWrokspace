@@ -40,13 +40,17 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()){
             case android.R.id.home:msg="Home";break;
-            case R.id.mp3:msg="mp3";break;
-            case R.id.chat:msg="chat";break;
-            case R.id.gallery:msg="gallery";break;
-            case R.id.settings:msg="settings";break;
+            case R.id.mp3:showPage(0);break;
+            case R.id.chat:showPage(1);break;
+            case R.id.gallery:showPage(2);break;
+            case R.id.settings:showPage(3);break;
         }
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         return true;
+    }
+
+    public void showPage(int position){
+        viewPager.setCurrentItem(position, true);
     }
 }
 

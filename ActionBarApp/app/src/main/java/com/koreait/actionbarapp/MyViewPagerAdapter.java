@@ -5,14 +5,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+import com.koreait.actionbarapp.chat.ChatFragment;
 import com.koreait.actionbarapp.mp3.MusicFragment;
 
 public class MyViewPagerAdapter extends FragmentStatePagerAdapter {
-    Fragment[] fragments=new Fragment[1];
+    Fragment[] fragments=new Fragment[2];
 
     public MyViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
-        fragments[0] = new MusicFragment(); //페이지 생성
+        fragments[0] = new MusicFragment();
+        fragments[1] = new ChatFragment();
     }
 
     //몇페이지?

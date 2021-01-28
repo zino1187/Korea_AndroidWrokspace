@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/mp3"
+        android:title="MP3"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/map"
+        android:title="MAP"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/cal"
+        android:title="Calendar"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/config"
+        android:title="Settings"
+        app:showAsAction="never" />
 
 </menu>
