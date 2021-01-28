@@ -6,15 +6,17 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.koreait.actionbarapp.chat.ChatFragment;
+import com.koreait.actionbarapp.gallery.GalleryFragment;
 import com.koreait.actionbarapp.mp3.MusicFragment;
 
 public class MyViewPagerAdapter extends FragmentStatePagerAdapter {
-    Fragment[] fragments=new Fragment[2];
+    Fragment[] fragments=new Fragment[3];
 
     public MyViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
         fragments[0] = new MusicFragment();
         fragments[1] = new ChatFragment();
+        fragments[2] = new GalleryFragment();
     }
 
     //몇페이지?
