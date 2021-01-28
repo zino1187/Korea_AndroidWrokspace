@@ -16,9 +16,11 @@ public class ChatThread extends Thread{
     BufferedReader buffr;
     BufferedWriter buffw;
     boolean flag=true; //쓰레드 가동 여부를 결정하는 논리값, 이 쓰레드를 죽이고 싶다면 false로 준다!!
+    ChatFragment chatFragment;
 
-    public ChatThread(Socket socket) {
+    public ChatThread(Socket socket, ChatFragment chatFragment ) {
         this.socket=socket;
+        this.chatFragment=chatFragment;
 
         try {
             buffr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -33,7 +35,11 @@ public class ChatThread extends Thread{
         String msg=null;
         try {
             msg= buffr.readLine();
-            send(msg);
+
+            //textview 로그에 남기기!!! 디자인에 대한 접근은 개발자 정의 쓰레드에서 진행할 수 없다!!
+            //즉 금지 사항이다!!!!
+            //chatFragment.t_log.append(msg+"\n");
+
         } catch (IOException e) {
             e.printStackTrace();
         }

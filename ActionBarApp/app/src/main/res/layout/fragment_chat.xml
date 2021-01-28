@@ -63,11 +63,11 @@
             android:hint="메시지 입력" />
 
         <Button
+            android:id="@+id/bt_send"
             android:text="send"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:onClick="send"/>
+            android:layout_weight="3"/>
 
     </LinearLayout>
 

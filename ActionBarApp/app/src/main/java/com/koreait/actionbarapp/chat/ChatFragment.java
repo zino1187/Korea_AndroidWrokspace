@@ -1,6 +1,9 @@
 package com.koreait.actionbarapp.chat;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +26,9 @@ public class ChatFragment extends Fragment {
     EditText t_ip, t_port;
     TextView t_log;
     EditText t_input;
+    Button bt_send;
     ChatThread chatThread;
+    Handler handler;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
@@ -31,6 +36,7 @@ public class ChatFragment extends Fragment {
         t_port = (EditText)view.findViewById(R.id.t_port);
         t_log = (TextView)view.findViewById(R.id.t_log);
         t_input = (EditText)view.findViewById(R.id.t_input);
+        bt_send = (Button)view.findViewById(R.id.bt_send);
 
         //버튼을 얻어와 이벤트 연결
         Button bt_connect = (Button)view.findViewById(R.id.bt_connect);
@@ -39,6 +45,21 @@ public class ChatFragment extends Fragment {
                 connectServer();
             }
         });
+        bt_send.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                send();
+            }
+        });
+        handler= new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(@NonNull Message message) {
+                //쓰레드가 부탁한 UI제어를 여기서 대신 해준다!!
+                Bundle bundle = message.getData();
+                String msg=bundle.getString("msg");
+                t_log.append(msg+"\n");
+            }
+        };
+
         return view;//인플레이션 시킨 결과 뷰 반환(우리의 경우 RelativeLayout)
     }
 
@@ -51,7 +72,7 @@ public class ChatFragment extends Fragment {
             public void run() {
                 try {
                     socket = new Socket(ip, port); //네트워크 접속 시도하러 출발!!!
-                    chatThread = new ChatThread(socket);
+                    chatThread = new ChatThread(socket, ChatFragment.this);
                     chatThread.start();//청취 시작!!!!
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -62,7 +83,18 @@ public class ChatFragment extends Fragment {
     }
 
     //메시지 보내기!!
-    public void send(View view){
-
+    public void send(){
+        Thread thread = new Thread(){
+            public void run() {
+                chatThread.send(t_input.getText().toString());
+                //핸들러에게 부탁하여 로그 남기기
+                Message message = new Message();
+                Bundle bundle = new Bundle();
+                bundle.putString("msg", t_input.getText().toString());
+                message.setData(bundle);
+                handler.sendMessage(message);
+            }
+        };
+        thread.start();
     }
 }
