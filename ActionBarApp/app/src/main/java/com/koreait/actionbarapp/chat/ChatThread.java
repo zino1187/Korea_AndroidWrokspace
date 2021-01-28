@@ -1,5 +1,8 @@
 package com.koreait.actionbarapp.chat;
 
+import android.os.Bundle;
+import android.os.Message;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -36,9 +39,11 @@ public class ChatThread extends Thread{
         try {
             msg= buffr.readLine();
 
-            //textview 로그에 남기기!!! 디자인에 대한 접근은 개발자 정의 쓰레드에서 진행할 수 없다!!
-            //즉 금지 사항이다!!!!
-            //chatFragment.t_log.append(msg+"\n");
+            Message message = new Message();
+            Bundle bundle = new Bundle();
+            bundle.putString("msg", msg);
+            message.setData(bundle);
+            chatFragment.handler.sendMessage(message);
 
         } catch (IOException e) {
             e.printStackTrace();
