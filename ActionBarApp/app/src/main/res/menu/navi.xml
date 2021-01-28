@@ -1,4 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/mp3"
+        android:title="MP3"
+        android:icon="@drawable/mp3"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/chat"
+        android:title="Chatting"
+        android:icon="@drawable/chatting"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/gallery"
+        android:title="Gallery"
+        android:icon="@drawable/gallery"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/settings"
+        android:title="Setting"
+        android:icon="@drawable/settings"
+        app:showAsAction="ifRoom"/>
 
 </menu>
