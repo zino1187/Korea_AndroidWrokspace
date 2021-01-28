@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:textSize="20sp"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="음악 파일명.mp3" />
+
+    <ImageView
+        android:layout_weight="4"
+        android:src="@drawable/play"
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
+
+    <ImageView
+        android:layout_weight="4"
+        android:src="@drawable/stop"
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
+
+</LinearLayout>
