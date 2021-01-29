@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,14 +38,17 @@ public class GalleryFragment extends androidx.fragment.app.Fragment {
     GridView gridView;
     GalleryAdapter galleryAdapter;
     Button bt_load, bt_async;
+    ProgressBar progress;
     ArrayList<Gallery> galleryList;
     Handler handler;
+    int totalRecord; //총 레코드 수
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_gallery, container, false);
         gridView =view.findViewById(R.id.gridView);
         bt_load =view.findViewById(R.id.bt_load);
         bt_async =view.findViewById(R.id.bt_async);
+        progress=view.findViewById(R.id.progress);
 
         galleryAdapter = new GalleryAdapter((MainActivity) this.getContext());
 
@@ -55,17 +59,25 @@ public class GalleryFragment extends androidx.fragment.app.Fragment {
             public void handleMessage(@NonNull Message message) {
                 galleryAdapter.notifyDataSetChanged(); //어댑터 다시 동작
                 gridView.invalidate();//UI갱신
+
+                //핸들러의 호출시점에 총 레코드수에 도달했다면, 여기서 프로그래스바를 감추자!!
+                if(totalRecord >=galleryList.size()){
+                    progress.setVisibility(View.INVISIBLE);
+                }
             }
         };
 
         //버튼과 리스너 연결
         bt_load.setOnClickListener(e->{
+            //프로그래스바 보이기
+            progress.setVisibility(View.VISIBLE);
             //웹서버로부터 제이슨 받아와야 함..
             galleryList.removeAll(galleryList); //기존 데이터 요소 모두 삭제
             getList();
         });
 
         bt_async.setOnClickListener(e->{
+            progress.setVisibility(View.VISIBLE);
             galleryList.removeAll(galleryList); //기존 데이터 요소 모두 삭제
             getListByAsync();
         });
@@ -100,6 +112,8 @@ public class GalleryFragment extends androidx.fragment.app.Fragment {
                     //서버로 부터 가져온 제이슨 배열만큼 이미지 로드 메서드를 호출!!!
                     try {
                         JSONArray jsonArray = new JSONArray(sb.toString());
+                        totalRecord = jsonArray.length(); //총 레코드수 보관..
+
                         for(int i=0;i<jsonArray.length();i++){
                             JSONObject json =(JSONObject) jsonArray.get(i);
                             String filename = json.getString("filename");
