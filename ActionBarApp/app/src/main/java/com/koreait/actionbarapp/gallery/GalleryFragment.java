@@ -19,6 +19,10 @@ import androidx.annotation.Nullable;
 import com.koreait.actionbarapp.MainActivity;
 import com.koreait.actionbarapp.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,45 +59,59 @@ public class GalleryFragment extends androidx.fragment.app.Fragment {
         //버튼과 리스너 연결
         bt_load.setOnClickListener(e->{
             //웹서버로부터 제이슨 받아와야 함..
-
-            //받아온 이미지파일명을 이용하여 웹서버에 이미지 요청!!
-            //load("http://172.30.1.28:7777/images/1.png");
-
+            galleryList.removeAll(galleryList); //기존 데이터 요소 모두 삭제
+            getList();
         });
 
         return view;
     }
     //웹서버로부터 데이터베이스의 정보를 가져오자!!
     public void getList(){
-        BufferedReader buffr=null;
-        try {
-            URL url=new URL("http://172.30.1.28:7777/gallery");
-            HttpURLConnection con=(HttpURLConnection) url.openConnection();
-            buffr = new BufferedReader(new InputStreamReader(con.getInputStream(),"UTF-8"));
-            StringBuilder sb = new StringBuilder(); //data값이 누적될 객체선언
-            String data =null;
-            while(true){
-                data = buffr.readLine();
-                if(data==null)break;
-                sb.append(data);
-            }
-            Log.d(TAG, sb.toString());
-            con.getResponseCode(); //요청과 응답이 이루어짐..
-            //서버와 연결이 이미 끊긴 시점..
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally{
-            if(buffr!=null){
+        Thread thread = new Thread(){
+            public void run() {
+                BufferedReader buffr=null;
                 try {
-                    buffr.close();
+                    URL url=new URL("http://172.30.1.28:7777/gallery");
+                    HttpURLConnection con=(HttpURLConnection) url.openConnection();
+                    buffr = new BufferedReader(new InputStreamReader(con.getInputStream(),"UTF-8"));
+                    StringBuilder sb = new StringBuilder(); //data값이 누적될 객체선언
+                    String data =null;
+                    while(true){
+                        data = buffr.readLine();
+                        if(data==null)break;
+                        sb.append(data);
+                    }
+                    Log.d(TAG, sb.toString());
+                    con.getResponseCode(); //요청과 응답이 이루어짐..
+                    //서버와 연결이 이미 끊긴 시점..
+                    //서버로 부터 가져온 제이슨 배열만큼 이미지 로드 메서드를 호출!!!
+                    try {
+                        JSONArray jsonArray = new JSONArray(sb.toString());
+                        for(int i=0;i<jsonArray.length();i++){
+                            JSONObject json =(JSONObject) jsonArray.get(i);
+                            String filename = json.getString("filename");
+                            load(filename); //이미지 한개를 서버로 부터 가져온후, 어댑터의 리스트에 추가!!
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
+                }finally{
+                    if(buffr!=null){
+                        try {
+                            buffr.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
-        }
+        };
+        thread.start(); //웹서버 요청 시작!!!
     }
 
     //네트워크상 웹서버에 접속하여 이미지를 가져오자!!!
@@ -101,7 +119,7 @@ public class GalleryFragment extends androidx.fragment.app.Fragment {
         Thread thread = new Thread(){
             public void run() {
                 try {
-                    URL url = new URL(image);
+                    URL url = new URL("http://172.30.1.28:7777/images/"+image);
                     InputStream is = url.openStream(); //지정한 URL자원에 대한 스트림을 취득!!
                     Bitmap bitmap = BitmapFactory.decodeStream(is);//비트맵 객체 취득!!
                     //취득한 이미지 정보를 어댑터가 사용중인 데이터에 대입!! (계획...)
