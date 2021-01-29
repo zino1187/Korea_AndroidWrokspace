@@ -36,7 +36,7 @@ public class GalleryFragment extends androidx.fragment.app.Fragment {
     String TAG=this.getClass().getName();
     GridView gridView;
     GalleryAdapter galleryAdapter;
-    Button bt_load;
+    Button bt_load, bt_async;
     ArrayList<Gallery> galleryList;
     Handler handler;
 
@@ -44,6 +44,8 @@ public class GalleryFragment extends androidx.fragment.app.Fragment {
         View view=inflater.inflate(R.layout.fragment_gallery, container, false);
         gridView =view.findViewById(R.id.gridView);
         bt_load =view.findViewById(R.id.bt_load);
+        bt_async =view.findViewById(R.id.bt_async);
+
         galleryAdapter = new GalleryAdapter((MainActivity) this.getContext());
 
         gridView.setAdapter(galleryAdapter);//그리드뷰와 어댑터와 연결
@@ -63,9 +65,20 @@ public class GalleryFragment extends androidx.fragment.app.Fragment {
             getList();
         });
 
+        bt_async.setOnClickListener(e->{
+            galleryList.removeAll(galleryList); //기존 데이터 요소 모두 삭제
+            getListByAsync();
+        });
+
         return view;
     }
-    //웹서버로부터 데이터베이스의 정보를 가져오자!!
+
+
+
+    /*----------------------------------------------------------------------
+     쓰레드와 핸들러를 이용하여 직접 구현한 코드 영역
+    웹서버로부터 데이터베이스의 정보를 가져오자!!
+    ----------------------------------------------------------------------*/
     public void getList(){
         Thread thread = new Thread(){
             public void run() {
@@ -141,4 +154,17 @@ public class GalleryFragment extends androidx.fragment.app.Fragment {
         thread.start(); //쓰레드로 네트워크 출발~~
     }
 
+
+    /*----------------------------------------------------------------------
+     AsyncTask 이용하여 구현한 코드 영역
+    웹서버로부터 데이터베이스의 정보를 가져오자!!
+    ----------------------------------------------------------------------*/
+    public void getListByAsync(){
+        MyAsync myAsync  = new MyAsync(this); //비동기 객체 생성
+
+        //백그라운드로 작업 시작!!! 이때 doInBackground메서드가 호출됨..쓰레드로..
+        //따라서 네트워크 요청 등에 사용하면 됨..
+        myAsync.execute("http://172.30.1.28:7777/gallery");
+
+    }
 }

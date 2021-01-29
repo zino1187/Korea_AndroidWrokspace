@@ -8,12 +8,24 @@
     안드로이드의 데이터 전용 위젯 3가지
     ListView, GridView, Spinner (껍데기에 불과 하기 때문에 모두 어댑터를 의존)
     -->
-    <Button
-        android:id="@+id/bt_load"
-        android:text="Load"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/bt_load"
+            android:text="직접구현"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/bt_async"
+            android:text="Async이용"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 
     <GridView
         android:id="@+id/gridView"
