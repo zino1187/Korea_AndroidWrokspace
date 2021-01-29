@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.koreait.actionbarapp.MainActivity;
 import com.koreait.actionbarapp.R;
@@ -42,7 +44,8 @@ public class GalleryAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        Gallery gallery = galleryList.get(position);
+        return gallery.getGallery_id();
     }
 
     @Override
@@ -58,8 +61,16 @@ public class GalleryAdapter extends BaseAdapter {
         
         //리스트에 들어있는 position 번째 Gallery 추출
         Gallery gallery  =galleryList.get(position);
+
         ImageView img = view.findViewById(R.id.img);
+        TextView t_title = view.findViewById(R.id.t_title);
+
         img.setImageBitmap(gallery.getBitmap());
+        t_title.setText(gallery.getTitle());
+
+        img.setOnClickListener(e->{
+            Toast.makeText(mainActivity, gallery.getGallery_id()+" 선택했어?", Toast.LENGTH_SHORT).show();
+        });
 
         return view;
     }
