@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +19,17 @@ import androidx.annotation.Nullable;
 import com.koreait.actionbarapp.MainActivity;
 import com.koreait.actionbarapp.R;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
 public class GalleryFragment extends androidx.fragment.app.Fragment {
+    String TAG=this.getClass().getName();
     GridView gridView;
     GalleryAdapter galleryAdapter;
     Button bt_load;
@@ -49,10 +54,46 @@ public class GalleryFragment extends androidx.fragment.app.Fragment {
 
         //버튼과 리스너 연결
         bt_load.setOnClickListener(e->{
-            load("http://172.30.1.28:7777/images/1781.jpg");
+            //웹서버로부터 제이슨 받아와야 함..
+
+            //받아온 이미지파일명을 이용하여 웹서버에 이미지 요청!!
+            //load("http://172.30.1.28:7777/images/1.png");
+
         });
 
         return view;
+    }
+    //웹서버로부터 데이터베이스의 정보를 가져오자!!
+    public void getList(){
+        BufferedReader buffr=null;
+        try {
+            URL url=new URL("http://172.30.1.28:7777/gallery");
+            HttpURLConnection con=(HttpURLConnection) url.openConnection();
+            buffr = new BufferedReader(new InputStreamReader(con.getInputStream(),"UTF-8"));
+            StringBuilder sb = new StringBuilder(); //data값이 누적될 객체선언
+            String data =null;
+            while(true){
+                data = buffr.readLine();
+                if(data==null)break;
+                sb.append(data);
+            }
+            Log.d(TAG, sb.toString());
+            con.getResponseCode(); //요청과 응답이 이루어짐..
+            //서버와 연결이 이미 끊긴 시점..
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally{
+            if(buffr!=null){
+                try {
+                    buffr.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     //네트워크상 웹서버에 접속하여 이미지를 가져오자!!!
