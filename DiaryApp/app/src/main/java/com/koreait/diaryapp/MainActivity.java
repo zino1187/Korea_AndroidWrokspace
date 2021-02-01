@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.koreait.diaryapp.animation.AnimationActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -31,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()){
             case R.id.ani:
-                //intent = new Intent(this, AnimationActivity.class);
+                intent = new Intent(this, AnimationActivity.class);
                 ;break;
 
             case R.id.schedule:
