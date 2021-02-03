@@ -22,7 +22,7 @@ public class MyWebSocketClient extends WebSocketClient {
 
     //메시지가 도착하면..
     public void onMessage(String message) {
-        Log.d(TAG, "onMessage called");
+        Log.d(TAG, "onMessage called "+message);
     }
 
     //접속이 끊기면...

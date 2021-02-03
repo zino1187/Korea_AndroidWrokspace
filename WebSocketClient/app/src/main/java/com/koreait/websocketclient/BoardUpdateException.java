@@ -1,13 +1,13 @@
 package com.koreait.websocketclient;
 
-public class BoardException extends RuntimeException{
-    public BoardException(String msg){
+public class BoardUpdateException extends RuntimeException{
+    public BoardUpdateException(String msg){
         super(msg);
     }
-    public BoardException(String msg, Throwable e){
+    public BoardUpdateException(String msg, Throwable e){
         super(msg, e);
     }
-    public BoardException(Throwable e){
+    public BoardUpdateException(Throwable e){
         super(e);
     }
 }
