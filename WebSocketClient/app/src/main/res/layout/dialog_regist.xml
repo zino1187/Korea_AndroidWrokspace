@@ -6,31 +6,13 @@
     android:background="#00BCD4"
     android:orientation="vertical">
 
-
-    <EditText
-        android:layout_weight="1"
-        style="@style/form_style"
-        android:layout_width="match_parent"
-        android:layout_height="0dp" />
-
-    <EditText
-        android:layout_weight="1"
-        style="@style/form_style"
-        android:layout_width="match_parent"
-        android:layout_height="0dp" />
-
-    <EditText
-        android:layout_weight="8"
-        style="@style/form_style"
-        android:lines="15"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:singleLine="false" />
+    <include layout="@layout/common_form"/>
 
     <Button
         android:text="등록"
+        android:layout_weight="1"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="0dp"/>
 
 </LinearLayout>
