@@ -11,8 +11,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -100,7 +102,53 @@ public class BoardDAO {
 
 
     //수정
+    public void edit(Board board) throws BoardUpdateException{
+        String uri="/board";
+        BufferedWriter buffw=null; //데이터 전송용 스트림
+        try {
+            URL url = new URL("http://"+ip+":"+port+uri);
+            HttpURLConnection con=(HttpURLConnection) url.openConnection();
+            con.setRequestMethod("PUT");
+            con.setRequestProperty("Content-Type","application/json;charset=utf-8");
+            con.setDoOutput(true);//서버에 데이터를 보낼때는 이 옵션을 준다(POST, PUT)
+            buffw = new BufferedWriter(new OutputStreamWriter(con.getOutputStream(),"UTF-8"));
+            String jsonString = gson.toJson(board);
 
+            buffw.write(jsonString);
+            buffw.flush();
+
+            int code = con.getResponseCode(); //요청 및 응답
+
+            if(code !=200){
+                throw new BoardUpdateException("수정실패");
+            }
+            //서버에 수정했음을 알리자!!
+            SocketMessage socketMessage = new SocketMessage();
+            socketMessage.setRequestCode("update"); //CRUD 중 update
+            socketMessage.data=jsonString;
+            mainActivity.myWebSocketClient.sendMsg(socketMessage); //쓰레드로 가능한가?? 아니면핸들러로 부탁한다..
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally{
+            if(buffw!=null){
+                try {
+                    buffw.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
     //삭제
 }
+
+
+
+
+
+
+
+

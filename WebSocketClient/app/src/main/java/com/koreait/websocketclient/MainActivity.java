@@ -62,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
                 getDetail((int)id);
             }
         });
+
+        getList();
     }
 
     //앱이 가동됨과 동시에 웹소켓서버와 접속 시도

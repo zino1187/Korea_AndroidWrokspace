@@ -2,6 +2,8 @@ package com.koreait.websocketclient;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import java.net.URI;
@@ -12,6 +14,7 @@ import org.json.JSONObject;
 public class MyWebSocketClient extends WebSocketClient {
     String TAG=this.getClass().getName();
     MainActivity mainActivity;
+    Gson gson=new Gson();
 
     public MyWebSocketClient(URI serverUri, MainActivity mainActivity) {
         super(serverUri);
@@ -21,12 +24,11 @@ public class MyWebSocketClient extends WebSocketClient {
     //서버와 연결되면...
     public void onOpen(ServerHandshake handshakedata) {
         Log.d(TAG, "onOpen called");
-        this.send("눈물이 앞을 가린다");
     }
 
     //메시지가 도착하면..
     public void onMessage(String message) {
-        Log.d(TAG, "onMessage called "+message);
+
         //서버에서 전달되어 온 메시지 분석
         //서버에서 발생할 일이? 등록? 수정? 삭제?
         try {
@@ -35,16 +37,24 @@ public class MyWebSocketClient extends WebSocketClient {
             if(json.get("requestCode").equals("create")){ //서버에서 등록작업이 누군가에 의해 발생함...
                 //목록을 갱신
                 mainActivity.boardDAO.selectAll();
+                Log.d(TAG, "글쓰기 발생 ");
             }else if(json.get("requestCode").equals("update")){
                 //목록을 갱신
                 mainActivity.boardDAO.selectAll();
+                Log.d(TAG, "수정 발생 ");
             }else if(json.get("requestCode").equals("delete")){
                 //목록을 갱신
                 mainActivity.boardDAO.selectAll();
+                Log.d(TAG, "삭제 발생 ");
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+    //메시지 보내기
+    public void sendMsg(SocketMessage socketMessage){
+        String jsonString = gson.toJson(socketMessage);
+        this.send(jsonString);
     }
 
     //접속이 끊기면...
