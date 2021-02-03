@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.net.URI;
@@ -15,6 +18,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    String TAG=this.getClass().getName();
 
     //웹소켓 객체 선언
     MyWebSocketClient myWebSocketClient;
@@ -22,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
     BoardAdapter boardAdapter;
     Handler handler;
+    DetailDialog detailDialog;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +50,18 @@ public class MainActivity extends AppCompatActivity {
 
         boardDAO = new BoardDAO(this);
         createSocket();
+
+        //리스트뷰와 리스너연결
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView parent, View view, int position, long id) {
+                Log.d(TAG, "parent = "+parent);
+                Log.d(TAG, "view = "+view);
+                Log.d(TAG, "position = "+position);
+                Log.d(TAG, "id = "+id);
+
+                getDetail((int)id);
+            }
+        });
     }
 
     //앱이 가동됨과 동시에 웹소켓서버와 접속 시도
@@ -69,6 +86,23 @@ public class MainActivity extends AppCompatActivity {
         thread.start();
     }
 
+    public void getDetail(int board_id){
+
+        //상세보기 대화 상자 띄우기!!  , 새창은 단독으로 존재할 수 없으므로,
+        //반드시 액티비티를 인수로 넘겨야 함
+        detailDialog = new DetailDialog(this);
+        detailDialog.show();
+
+        //웹서버에서 데이터를 한건 가져와도 되지만, 네트워크보다는 현재 메모리에
+        //존재하는 객체를 접근하는게 훨 빠르다!!!
+        for(Board board : boardAdapter.boardList){
+            if(board.getBoard_id()==board_id){
+                detailDialog.setData(board);
+                break;
+            }
+        }
+
+    }
 }
 
 

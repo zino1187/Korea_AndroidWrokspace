@@ -57,11 +57,6 @@ public class BoardAdapter extends BaseAdapter {
         t_regdate.setText(board.getRegdate());
         t_hit.setText(Integer.toString(board.getHit()));
 
-        //뷰그룹과 이벤트 연결
-        t_title.setOnClickListener(e->{
-            System.out.println("눌렀어?");
-        });
-
         return view;
     }
 }

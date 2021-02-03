@@ -2,22 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="0dp"
-    android:layout_weight="9"
+    android:layout_weight="9.5"
     android:orientation="vertical">
 
     <EditText
+        android:id="@+id/t_title"
         style="@style/form_style"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
     <EditText
+        android:id="@+id/t_writer"
         style="@style/form_style"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
     <EditText
+        android:id="@+id/t_content"
         style="@style/form_style"
         android:layout_width="match_parent"
         android:layout_height="0dp"
