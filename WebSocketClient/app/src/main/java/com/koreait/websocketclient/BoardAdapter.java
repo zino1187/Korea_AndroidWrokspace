@@ -1,4 +1,46 @@
 package com.koreait.websocketclient;
 
-public class BoardAdapter {
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import java.util.ArrayList;
+import java.util.List;
+
+//ListView에 제공할 정보를 구성해보자!!
+public class BoardAdapter extends BaseAdapter {
+    List<Board> boardList = new ArrayList<Board>();
+    LayoutInflater layoutInflater;
+    MainActivity mainActivity;
+
+    public BoardAdapter(MainActivity mainActivity){
+        this.mainActivity=mainActivity;
+        layoutInflater = mainActivity.getLayoutInflater();
+    }
+
+    @Override
+    public int getCount() {
+        return boardList.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return boardList.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return boardList.get(position).getBoard_id();
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View view = null;
+        if(convertView !=null){ //이미 뷰가 존재한다면...기존꺼 사용
+            view = convertView;
+        }else{//아니라면, 새롭게 인플레이션..
+            view = layoutInflater.inflate(R.layout.item_board, parent, false);//인플레이션시킬거임..(새롭게 생성할 것임)
+        }
+        return view;
+    }
 }
