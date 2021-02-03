@@ -1,6 +1,7 @@
 package com.koreait.websocketclient;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -55,6 +56,11 @@ public class BoardAdapter extends BaseAdapter {
         t_writer.setText(board.getWriter());
         t_regdate.setText(board.getRegdate());
         t_hit.setText(Integer.toString(board.getHit()));
+
+        //뷰그룹과 이벤트 연결
+        t_title.setOnClickListener(e->{
+            System.out.println("눌렀어?");
+        });
 
         return view;
     }
