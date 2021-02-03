@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     //앱이 가동됨과 동시에 웹소켓서버와 접속 시도
     public void createSocket(){
         try {
-            myWebSocketClient = new MyWebSocketClient(new URI("ws://172.30.1.8:9999"));
+            myWebSocketClient = new MyWebSocketClient(new URI("ws://172.30.1.8:9999"), this);
             myWebSocketClient.connect();//접속!!
             getList();
         } catch (URISyntaxException e) {
