@@ -95,10 +95,44 @@ public class BoardDAO {
         }
     }
 
-    //상세보기
-
+    //상세보기(메모리상의 boardList사용했기 때문에필요 없엇다..)
 
     //등록
+    public void insert(Board board){
+        String uri="/board";
+        BufferedWriter buffw=null; //서버에 보낼 것이므로...
+        try {
+            URL url = new URL("http://"+ip+":"+port+uri);
+            HttpURLConnection con = (HttpURLConnection)url.openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type","application/json;charset=utf-8");
+            con.setDoOutput(true);
+            //보낼 데이터 구성
+            buffw = new BufferedWriter(new OutputStreamWriter(con.getOutputStream(), "UTF-8"));
+
+            //이 자바 --> json 으로.... Gson
+            String jsonString = gson.toJson(board);
+            buffw.write(jsonString);
+            buffw.flush();
+            int code = con.getResponseCode();
+            if(code !=200){
+                throw new BoardUpdateException("등록실패");
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if(buffw!=null){
+                try {
+                    buffw.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
 
 
     //수정

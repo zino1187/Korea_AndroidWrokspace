@@ -26,7 +26,8 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
     BoardAdapter boardAdapter;
     Handler handler;
-    DetailDialog detailDialog;
+    DetailDialog detailDialog;//상세보기 새창
+    RegistDialog registDialog;//등록 새창
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +105,12 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    //등록하기 다이얼로그 폼 띄우기!!
+    public void regist(View view){
+        registDialog = new RegistDialog(this);
+        registDialog.show();
     }
 }
 

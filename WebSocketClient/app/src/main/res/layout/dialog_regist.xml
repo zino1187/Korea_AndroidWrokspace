@@ -2,17 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
     android:background="#00BCD4"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10dp">
 
-    <include layout="@layout/common_form"/>
+    <include layout="@layout/common_form" />
 
     <Button
-        android:text="등록"
-        android:layout_weight="1"
-        android:layout_gravity="center_horizontal"
+        android:id="@+id/bt_regist"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"/>
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
+        android:text="등록" />
 
 </LinearLayout>
