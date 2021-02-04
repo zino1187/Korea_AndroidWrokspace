@@ -127,6 +127,10 @@ public class BoardDAO {
             socketMessage.setRequestCode("update"); //CRUD 중 update
             socketMessage.data=jsonString;
             mainActivity.myWebSocketClient.sendMsg(socketMessage); //쓰레드로 가능한가?? 아니면핸들러로 부탁한다..
+
+            //다이얼로그 창 닫기!!
+            mainActivity.detailDialog.dismiss();
+
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -143,6 +147,25 @@ public class BoardDAO {
     }
 
     //삭제
+    public void del(int board_id) throws BoardUpdateException{
+        String uri="/board/"+board_id;  //RESTful 준수하자!!
+
+        try {
+            URL url = new URL("http://"+ip+":"+port+uri);
+            HttpURLConnection con=(HttpURLConnection) url.openConnection();
+            con.setRequestMethod("DELETE");
+            int code = con.getResponseCode(); //요청 및 응답이 발생
+            if(code !=200){
+                throw new BoardUpdateException("삭제 실패");
+            }
+            mainActivity.detailDialog.dismiss();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
 
 
