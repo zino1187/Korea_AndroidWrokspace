@@ -118,6 +118,7 @@ public class BoardDAO {
             if(code !=200){
                 throw new BoardUpdateException("등록실패");
             }
+            mainActivity.registDialog.dismiss();//창닫기 추가~!!
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
