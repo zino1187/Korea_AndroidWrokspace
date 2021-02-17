@@ -17,15 +17,32 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.ConnectException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 
 public class MainActivity extends AppCompatActivity {
     String TAG=this.getClass().getName();
     public static final int REQUEST_CAMERA=1;
     ImageView imageView;
     Bitmap bitmap; //현재 보고 잇는 사진에 대한 비트맵
+    File file;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,13 +96,15 @@ public class MainActivity extends AppCompatActivity {
 
         //이 디렉토리에 파일을 생성하자!!!
         String filename = System.currentTimeMillis()+".jpg"; //사진파일명 만들기!!
-        File file = new File(folder, filename); //pic 이라는 디렉토리밑에 파일 생성!! empty 상태임!!
+        file = new File(folder, filename); //pic 이라는 디렉토리밑에 파일 생성!! empty 상태임!!
 
         //현재 생성된 파일은 텅비어 있으므로, 현재 사용자가 보고있는 이미지뷰로부터 사진을 채워넣어야 한다!!
         FileOutputStream fos=null;
         try {
             fos = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);//스트림을 이용하여 파일완성, 채워넣기!!
+
+            //컴프레스 이후에 파일이 물리적으로 존재하게 됨..
             Log.d(TAG, "파일 존재 여부 : "+file.exists());
 
             Toast.makeText(this, "이미지가 저장되었습니다", Toast.LENGTH_SHORT).show();
@@ -98,6 +117,194 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void send(View view){
+        Thread thread = new Thread(){
+            public void run() {
+                upload2();
+            }
+        };
+        thread.start();
+    }
 
+    /*기존의 HttpURLConnection 을 이용하여 파일까지 서버에 업로드해본다!!
+        HTTP 프로토콜의 multipart/form-data 형식을 갖춰어야 한다..즉 크롬 브라우저의 역할을
+        안드로이드 코드에서 구현해야 한다...
+    */
+    public void upload() {
+        //바운더리 값은 아무거나 상관이 없으나 반드시 바운더리값을 기준으로 앞,뒤로 두개의 하이픈은 존재해야 한다..
+        String boundary="sdjflksdfjlkdsfjlksadflsaj";
+        String line="/r/n"; //줄바꿈  \r은 케리지리턴 즉 커서를 처음 위치로 오게..
+        BufferedWriter buffw=null; //파일의 정보를 전송할 스트림
+        OutputStream os=null; //파일을 전송할 스트림
+        FileInputStream fis=null;
+
+        try {
+            URL url = new URL("http://192.168.35.96:9999/admin/photo");
+            HttpURLConnection con =(HttpURLConnection) url.openConnection();
+
+            //요청 헤더값 구성
+
+            //다른 일반 텍스트 파라미터들과 구분하기 위해서 정해놓은 경계규칙(w3c에서...)
+            con.setRequestProperty("Content-Type","multipart/form-data;charset=utf-8; boundary="+boundary);
+            con.setRequestMethod("POST");
+            con.setDoOutput(true);//서버에 보낼때..
+
+            buffw = new BufferedWriter(new OutputStreamWriter( con.getOutputStream() , "UTF-8"));
+            //요청을 하기 전에, 필요한 파라미터를 구성하되, 출력스트림으로 처리하자!!
+            //텍스트 파라미터 전송을 위한 폼 구성
+
+            //버퍼에 쌓기!   flush()할때 출력이 발생
+            buffw.append("--"+boundary).append(line);
+            buffw.append("Content-Type:text/plain;charset=utf-8").append(line);
+            buffw.append("Content-Disposition:form-data; name=\"title\"").append(line);
+            buffw.append(line);
+            buffw.append("연습이에용^^").append(line);
+            buffw.flush();
+
+            //파일 파라미터 전송을 위한 폼 구성
+            Log.d(TAG, "전송직전 파일명은 "+file.getName());
+
+            buffw.append("--"+boundary).append(line);
+            buffw.append("Content-Disposition: form-data; name=\"myFile\"; filename=\"" + file.getName() + "\"").append(line);
+            buffw.append("Content-Type: " + URLConnection.guessContentTypeFromName(file.getName())).append(line);
+            buffw.append("Content-Transfer-Encoding: binary").append(line);
+            buffw.append(line);
+            buffw.flush();
+
+            //서버로 전송할 파일의 데이터를 읽어들여, 스트림으로 출력하자!!
+            fis = new FileInputStream(file);//전송할 파일을 읽기위한 스트림!!
+            os = con.getOutputStream();
+
+            int data=-1;
+            byte[] buffer = new byte[1024];
+
+            while(true){
+                data = fis.read(buffer); //한 알갱이를 읽어들여, 바구니인 byte배열에 쌓아놓자!
+                if(data==-1)break;  //1M  = 1024*1024
+                os.write(buffer);//한 배열씩 서버에 스트림으로 전송
+            }
+            os.flush();
+            buffw.append(line);
+            buffw.append("--"+boundary+"--").append(line); //파일파라미터에 대한 경계 종료
+
+            int code = con.getResponseCode(); //요청 및 응답이 발생하는 시점..
+            Log.d(TAG, "서버의 응답코드"+code);
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }catch(IOException e){
+            e.printStackTrace();
+        }finally{
+            if(fis!=null){
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(os!=null){
+                try {
+                    os.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void upload2(){
+        String boundary = "^-----^";
+        String LINE_FEED = "\r\n";
+        String charset = "UTF-8";
+        OutputStream outputStream;
+        PrintWriter writer;
+
+        JSONObject result = null;
+        try{
+
+            URL url = new URL("http://192.168.35.96:8888/admin/photo");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+            connection.setRequestProperty("Content-Type", "multipart/form-data;charset=utf-8;boundary=" + boundary);
+            connection.setRequestMethod("POST");
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            connection.setUseCaches(false);
+            connection.setConnectTimeout(15000);
+
+            outputStream = connection.getOutputStream();
+            writer = new PrintWriter(new OutputStreamWriter(outputStream, charset), true);
+
+            /** Body에 데이터를 넣어줘야 할경우 없으면 Pass **/
+            writer.append("--" + boundary).append(LINE_FEED);
+            writer.append("Content-Disposition: form-data; name=\"title\"").append(LINE_FEED);
+            writer.append("Content-Type: text/plain; charset=" + charset).append(LINE_FEED);
+            writer.append(LINE_FEED);
+            writer.append("batman").append(LINE_FEED);
+            writer.flush();
+
+            /** 파일 데이터를 넣는 부분**/
+            Log.d(TAG, "업로드할 파일명"+file.getName());
+
+            writer.append("--" + boundary).append(LINE_FEED);
+            writer.append("Content-Disposition: form-data; name=\"myFile\"; filename=\"" + file.getName() + "\"").append(LINE_FEED);
+            writer.append("Content-Type: " + URLConnection.guessContentTypeFromName(file.getName())).append(LINE_FEED);
+            writer.append("Content-Transfer-Encoding: binary").append(LINE_FEED);
+            writer.append(LINE_FEED);
+            writer.flush();
+
+            FileInputStream fis = new FileInputStream(file);
+            byte[] buffer = new byte[1024];
+            int bytesRead = -1;
+
+            while (true) {
+                bytesRead = fis.read(buffer);
+                if(bytesRead==-1)break;
+                outputStream.write(buffer);
+            }
+            outputStream.flush();
+            fis.close();
+            writer.append(LINE_FEED);
+            writer.flush();
+
+            writer.append("--" + boundary + "--").append(LINE_FEED);
+            writer.close();
+
+            int responseCode = connection.getResponseCode();
+            Log.d(TAG, "요청 시도 결과 responseCode " + responseCode);
+
+            if (responseCode == HttpURLConnection.HTTP_OK || responseCode == HttpURLConnection.HTTP_CREATED) {
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+                try {
+                    result = new JSONObject(response.toString());
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+                result = new JSONObject(response.toString());
+            }
+
+        } catch (ConnectException e) {
+            Log.e(TAG, "ConnectException");
+            e.printStackTrace();
+
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
